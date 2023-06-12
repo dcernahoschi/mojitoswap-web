@@ -1,0 +1,1 @@
+<h1>Pools page</h1>
