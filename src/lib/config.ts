@@ -1,30 +1,26 @@
+import { RadixNetwork } from '@radixdlt/radix-dapp-toolkit'
+
 export const AppConfig = {
-    dAppId: 'account_tdx_c_1p9jy2vlth43flyqdn97gxprra0mjnxme8qprzqy5h9ls9hwp8l',
-    dAppName: 'Mojitoswap',
-    dexPackageAddr: 'package_tdx_c_1qr486gxctdfqyymclng79yqj68aqlm3uhcc9h2ztj6mq6a5qmy', // for reference, not needed
-    dexComponentAddr: 'component_tdx_c_1qvg4ruhlcp73hdpwzmv9r4pmuepchax2qjye6jg3qdasf23lu5',
-    poolPackageAddr: 'package_tdx_c_1qr7a0n3xe9z74sple5j2hq8gwhneakuzafx2ga9hh6xqyeactl',
-    dexAdminBadgeAddr: 'resource_tdx_c_1qyg4ruhlcp73hdpwzmv9r4pmuepchax2qjye6jg3qdasrtr3e0', // hard code this to avoid a call to gateway
-    networkId: 12, // 12 is for RCnet 01 for Mainnet
-    gatewayBasePath: 'https://rcnet.radixdlt.com',
+    dAppId: 'account_tdx_2_12xd6a5p5djhetr4lre6juhd8ef5tlfc6xr030j59m94clyh4a5xpua',
+    networkId: RadixNetwork.Stokenet, // 12 is for RCnet 01 for Mainnet
+    dAppName: 'MojitoSwap',
+    dAppVersion: '0.1.0',
+    dexPackageAddr: 'package_tdx_2_1p5vq4c5euldnlmlpv83rrsre7edpd06k5rt0tevnfp6drwng06q98g', // for reference, not needed
+    dexComponentAddr: 'component_tdx_2_1cz8hcmc5u9rtfny3yrt8hewm4wlsjyatjs7trgzgdl82vnucfa7q7l',
+    poolPackageAddr: 'package_tdx_2_1pkmkzk8w82r064prwecrqrjrfrp88jhdwqkyv49juek4ynhn7476xx',
+    dexAdminBadgeAddr: 'resource_tdx_2_1tkh0y4lhn95yl2y8lxn2lhk5fgw8rd2p6fzyl94wsd2v3ygvn50773', // hard code this to avoid a call to gateway
+    gatewayBasePath: 'https://babylon-stokenet-gateway.radixdlt.com',
     stateRefreshMs: 30_000,
     minPrice:  0.000000000000019849,
     maxPrice:  170134484377190040957.155711420855095752,
     removeCommittedTransactionTimeoutMs: 600000,
+    decimalPrecision: 18
 }
 
-// rdx: resource_tdx_c_1qyqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq40v2wv
-// moj usdt: resource_tdx_c_1q8wy3klwfuqr3ku0jey2xkdjnjm3dhzye008tt0k07tqy7u5ep
-// moj btc: resource_tdx_c_1qyrg9h2exsxy4ztej75x2f399fgyrvywt84c722w5rtsefrerl
-// moj eth: resource_tdx_c_1qy6j9707ft5hc9cnzrajhmlj95rl4d6nldxktaqnkufsd8dmrt
-// moj doge: resource_tdx_c_1qxpffm8l6tnzr9xnphhn4rywkrp5am0s28y0av8x0a0qzr5nel
-// moj sol: resource_tdx_c_1qy0hq8m3yguw6u6c2l5ufewspzyya4598uryv6vz3k9st8vgfj
-// moj bnb: resource_tdx_c_1q82epzskqm4rckn8ha6j47amuy7p567w8qxwt9j9wg7q0ka752
+// xrd: resource_tdx_2_1tknxxxxxxxxxradxrdxxxxxxxxx009923554798xxxxxxxxxtfd2jc
+// moj usdt: resource_tdx_2_1tkrtf93xqr8409h4gf8vqz82u0679xtrtx7mgqd96adjx0rzmn5alu
+// moj btc: resource_tdx_2_1tkjmxmcg9czh3p4y3e3hr9cdgv4umn4qg9lm46mrvpuarschcwwmn7
 
-// 9a4b7e4c5ded135c6991736ba89b9c1dea44384d424444960a697dd46a9134eb - token build tx
-
-// pool xrd-usdt: component_tdx_c_1qvjghj3qr9m5qr63cmtpzauez9z4gzhu6n92wyslr05srvqsl2
-// pool btc-usdt: component_tdx_c_1qd7tzqz2c3xm0d0ah6wdykpp2mp92whmklvz3xr429gsefspht
-// pool eth-usdt: component_tdx_c_1q04mf0fd6zhnz3suxvjn57pae8w4gs52z6a0acprdfls5dgd34
-// pool doge-usdt: component_tdx_c_1qvycq07808jgnk88mrlf73sjcszjsz4et5rn68qm8fhsz63yrt
-// pool sol-usdt: component_tdx_c_1q0h5gvzyp3fhuhg6h6ckvdc0c3600jhc3zrdeth9zf7s6wxalx
+// pool xrd-usdt: component_tdx_2_1crxtxaa3p9fwu70yy5q0x4nc7prju5t7z3pgmrw3m4t5l0sfkxr7wv
+// pool xrd-usdt: component_tdx_2_1cp6cthqe2wee0nwg29hyz0xefvtxrpj4yf9yh97nszp3avwnhxwn5e
+// pool btc-usdt: component_tdx_2_1cqxshx9mcg8yqkjvpxaj3e7x6vgzk6c8eyh4eglwkjjuld90qs4mdl

@@ -1,68 +1,31 @@
 import { get } from "svelte/store"
-import { appStatePromise } from '../lib/stores'
-import { RadixDappToolkit } from '@radixdlt/radix-dapp-toolkit'
-import { AppConfig } from '../lib/config'
+import { appStatePromise } from './stores'
+import { DataRequestBuilder, RadixDappToolkit } from '@radixdlt/radix-dapp-toolkit'
+import { AppConfig } from './config'
 
-export const walletConn = RadixDappToolkit(
-    { dAppDefinitionAddress: AppConfig.dAppId, dAppName: AppConfig.dAppName },
-    (requestData) => {
-        requestData({
-            accounts: { quantifier: 'atLeast', quantity: 1 }
-        }).map(({ data: { accounts } }) => {
-            console.log('onConnect account data: ', accounts)
-            console.log('On request, set store account to: ' + accounts[0].address)
-            appStatePromise.update(() =>
-                Promise.resolve(get(appStatePromise)).then((appState) =>
-                    appState.refreshActiveAccount(accounts[0].address)
-                )
+export const walletConn = RadixDappToolkit({
+    dAppDefinitionAddress: AppConfig.dAppId,
+    networkId: AppConfig.networkId,
+    applicationName: AppConfig.dAppName,
+    applicationVersion: AppConfig.dAppVersion
+});
+walletConn.walletApi.setRequestData(DataRequestBuilder.accounts().atLeast(1));
+walletConn.walletApi.walletData$.subscribe(walletData => {
+    console.log('onStateChange wallet data: ', walletData)
+    const accounts = walletData.accounts
+    if (accounts === undefined || accounts.length === 0) {
+        appStatePromise.update(() =>
+            Promise.resolve(get(appStatePromise)).then((appState) =>
+                appState.refreshActiveAccount(undefined)
             )
-        })
-    },
-    {
-        networkId: AppConfig.networkId,
-        onDisconnect: () => {
-            appStatePromise.update(() =>
-                Promise.resolve(get(appStatePromise)).then((appState) =>
-                    appState.refreshActiveAccount(undefined)
-                )
+        )
+        console.log('onStateChange, set store account to: ' + undefined)
+    } else {
+        console.log('onStateChange, set store account to: ' + accounts[0].address)
+        appStatePromise.update(() =>
+            Promise.resolve(get(appStatePromise)).then((appState) =>
+                appState.refreshActiveAccount(accounts[0].address)
             )
-        },
-        onInit: ({ accounts }) => {
-            console.log('onInit account data: ', accounts)
-            if (accounts === undefined || accounts.length === 0) {
-                appStatePromise.update(() =>
-                    Promise.resolve(get(appStatePromise)).then((appState) =>
-                        appState.refreshActiveAccount(undefined)
-                    )
-                )
-                console.log('On init, set store account to: ' + undefined)
-            } else {
-                console.log('On init, set store account to: ' + accounts[0].address)
-                appStatePromise.update(() =>
-                    Promise.resolve(get(appStatePromise)).then((appState) =>
-                        appState.refreshActiveAccount(accounts[0].address)
-                    )
-                )
-            }
-        },
-        onStateChange(state) {
-            const accounts = state.accounts
-            console.log('onStateChange account data: ', accounts)
-            if (accounts === undefined || accounts.length === 0) {
-                appStatePromise.update(() =>
-                    Promise.resolve(get(appStatePromise)).then((appState) =>
-                        appState.refreshActiveAccount(undefined)
-                    )
-                )
-                console.log('onStateChange, set store account to: ' + undefined)
-            } else {
-                console.log('onStateChange, set store account to: ' + accounts[0].address)
-                appStatePromise.update(() =>
-                    Promise.resolve(get(appStatePromise)).then((appState) =>
-                        appState.refreshActiveAccount(accounts[0].address)
-                    )
-                )
-            }
-        },
+        )
     }
-)
+});

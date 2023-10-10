@@ -62,13 +62,18 @@ export class AppState {
         try {
             this.cleanupOldCommittedTxs()
 
-            const newCommittedTxs = await this.gateway.fetchCommittedTxs(null, this.stateVersion)
-            //console.log(newCommittedTxs)
+            const referencedAddrs = [AppConfig.dexComponentAddr, ...this.dexState.poolAddrs()]
+            if (this.accountState !== undefined) {
+                referencedAddrs.push(this.accountState?.accountAddr)
+            }
+            console.log("Fetching new txs...")
+            const newCommittedTxs = await this.gateway.fetchCommittedTxs(null, this.stateVersion, new Set(referencedAddrs));
+            console.log(newCommittedTxs)
 
             this.markInProgressTxsCommitted(newCommittedTxs)
 
             const result = await this.analyzeSuccessfullyCommittedTxs(newCommittedTxs)
-            //console.log(result)
+            console.log(result)
             await this.refreshAppState(result, newCommittedTxs)
 
             return this
@@ -93,6 +98,8 @@ export class AppState {
         if (this.accountState !== undefined && (txAnalysisResult.dexReferenced || txAnalysisResult.activeAccountReferenced)) {
             await this.refreshActiveAccount(this.accountState?.accountAddr, committedTxs.stateVersion)
         }
+        console.log("State version was: " + this.stateVersion)
+        console.log("Setting state version to: " + committedTxs.stateVersion)
         this.stateVersion = committedTxs.stateVersion
     }
 
@@ -223,8 +230,8 @@ export class PoolState {
     readonly resource0Symbol: string
     readonly resource1Symbol: string
 
-    constructor(stateVersion: number, componentAddr:string, resource0: string, resource1: string, 
-        posNFTAddr: string, fee:Decimal, sqrtPrice: Decimal, resource0Symbol: string, resource1Symbol: string) {
+    constructor(stateVersion: number, componentAddr: string, resource0: string, resource1: string,
+        posNFTAddr: string, fee: Decimal, sqrtPrice: Decimal, resource0Symbol: string, resource1Symbol: string) {
         this.stateVersion = stateVersion
         this.componentAddr = componentAddr
         this.resource0Addr = resource0
@@ -234,6 +241,10 @@ export class PoolState {
         this.price = sqrtPrice.pow(2)
         this.resource0Symbol = resource0Symbol
         this.resource1Symbol = resource1Symbol
+    }
+
+    inversePrice(): Decimal {
+        return new Decimal("1").div(this.price);
     }
 }
 
