@@ -15,12 +15,6 @@ App state:
 {#if appState !== undefined}
 	<ul>
 		<li>state version: {appState?.stateVersion}</li>
-		<li>pool addrs: {appState?.dexState.poolAddrToPoolState.size}</li>
-		<ul>
-			{#each Array.from(appState?.dexState.poolAddrToPoolState) as [poolAddr, { resource0Addr, resource1Addr, posNFTAddr, price, resource0Symbol, resource1Symbol }]}
-				<li>{poolAddr} => {resource0Addr}, {resource1Addr}, {posNFTAddr}, {price}, {resource0Symbol}, {resource1Symbol}</li>
-			{/each}
-		</ul>
 		<li>
 			connected account: {appState?.accountState?.accountAddr}
 			{#if appState.accountState !== undefined}
@@ -31,6 +25,27 @@ App state:
 				</ul>
 			{/if}
 		</li>
+		{#if appState.accountState !== undefined}
+			<li>
+				account positions:
+				<ul>
+					{#each Array.from(appState?.accountState?.poolAddrToPosition) as [poolAddr, positions]}
+						<li>{poolAddr}:</li>
+						<ul>
+							{#each positions as { id, posNFTAddr, liq, low_price, high_price }}
+								<li>{id}: {posNFTAddr}, {liq}, {low_price}, {high_price}</li>
+							{/each}
+						</ul>
+					{/each}
+				</ul>
+			</li>
+		{/if}
+		<li>pools: {appState?.dexState.poolAddrToPoolState.size}</li>
+		<ul>
+			{#each Array.from(appState?.dexState.poolAddrToPoolState) as [poolAddr, { resource0Addr, resource1Addr, posNFTAddr, fee, price, resource0Symbol, resource1Symbol }]}
+				<li>{poolAddr} => {resource0Addr}, {resource1Addr}, {posNFTAddr}, {fee}, {price}, {resource0Symbol}, {resource1Symbol}</li>
+			{/each}
+		</ul>
 		<li>
 			recent transactions:
 			<ul>
